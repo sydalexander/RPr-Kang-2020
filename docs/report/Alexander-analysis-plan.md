@@ -17,8 +17,8 @@ Author: Sydney, Alexander
 
 Our planned modifications include the following: we will improve speed limit information by replacing the `network_setting` function iwth use of the `osmnx.speed` module.
 We will also improve translation of hospital catchments into hexagons by modifying the `overlap_calc` function.
-Instead of exlcuding hospital catchments whose area us less than 50% within a certain hexagon, we will weight the (service area) by the percentage of overlap.
-we will comment every line of the function in order to improve readibility and comprehension of the function.
+Instead of exlcuding hospital catchments whose area is less than 50% within a certain hexagon, we will weight the service area by the percentage of overlap.
+we will comment every line of the ***overlap_calc*** function in order to improve readibility and comprehension.
 
 ## Results
 
