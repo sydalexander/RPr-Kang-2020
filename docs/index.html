@@ -14585,6 +14585,9 @@ This was achieved through the use of an enhanced two-step flating catchment area
 E2SFCA first calculated a bed-to-population ratio for each hospital location; afterwards it summed the ratios for residential locations where hospital locations overlapped.
 However, given the fact that E2FSCA is very computationally intensive, a modified E2SFCA in order to conduct the study more efficiently, relying on Python multiprocessing library.
 The orignal study used four types of datasets: the study used a hospital dataset, which included the number of beds in ICUs and the number of ventilators per hospital; it used a dataset COVID-19 confirmed cases; it used a residential dataset; and it used a road network dataset.</p>
+<p>We improve speed limit information by replacing the <code>network_setting</code> function iwth use of the <code>osmnx.speed</code> module.
+Additionally, we translate hospital catchments into hexagons by modifying the <code>overlap_calc</code> function.
+Instead of exlcuding hospital catchments whose area us less than 50% within a certain hexagon, we will weight the service area by the percentage of overlap.</p>
 <p>The <strong>spatial extent</strong> of the study was Illinois, USA. The <strong>spatial scale</strong> of the study was zip codes. The <strong>temporal extent</strong> of the study was 2020.</p>
 <p>The original study was conducted using CyberGIS-Jupyter.</p>
 
@@ -15851,6 +15854,14 @@ Wall time: 31.4 s
 
 </div>
 </div>
+</div>
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>We replace with the <strong><em>network setting</em></strong> function with the <strong><em>osmnx speed module</em></strong> in order to improve efficiency of the code.</p>
+
+</div>
+</div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
@@ -15909,6 +15920,14 @@ Wall time: 31.4 s
 </div>
 </div>
 
+</div>
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>Here, we implement the <strong><em>osmnx speed module</em></strong>.</p>
+
+</div>
+</div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
@@ -16021,9 +16040,9 @@ Compare to the previous results.</p>
 
 
 <span class="c1"># Check that osmnx added speeds and travel times to graph</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">edges</span><span class="p">[</span><span class="s1">&#39;speed_kph&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">())</span>
-<span class="nb">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">edges</span><span class="p">))</span> <span class="o">+</span> <span class="s2">&quot; edges in graph&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">edges</span><span class="p">[</span><span class="s1">&#39;travel_time&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">())</span>
+<span class="c1"># print(edges[&#39;speed_kph&#39;].value_counts())</span>
+<span class="c1"># print(str(len(edges)) + &quot; edges in graph&quot;)</span>
+<span class="c1"># print(edges[&#39;travel_time&#39;].value_counts())</span>
 
 <span class="c1"># # Count</span>
 <span class="c1"># edges[&#39;speed_kph&#39;] = edges[&#39;speed_kph&#39;]*0.621371</span>
@@ -16447,6 +16466,14 @@ Wall time: 30.9 s
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>We modify the <strong><em>overlap_calc</em></strong> function in order to weight service areas by percentage of overlap instead of simply exlcuding hospital catchments whose area is less than 50% within a certain hexagon.</p>
+
+</div>
+</div>
+</div>
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h3 id="overlap_calc">overlap_calc<a class="anchor-link" href="#overlap_calc">&#182;</a></h3><p>Calculates and aggregates accessibility statistics for one catchment on our grid file.</p>
 <p>Args:</p>
 <ul>
@@ -16501,6 +16528,14 @@ Wall time: 30.9 s
 </div>
 </div>
 
+</div>
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>The following code block adds comments between lines of the function which explain what each line is doing. This improves readability and facilitates easier understanding for future replications.</p>
+
+</div>
+</div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
@@ -17914,7 +17949,13 @@ Wall time: 1.29 s
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="Conclusion">Conclusion<a class="anchor-link" href="#Conclusion">&#182;</a></h3><p>to be written.</p>
+<h3 id="Conclusion">Conclusion<a class="anchor-link" href="#Conclusion">&#182;</a></h3><p>The changes we have made to Kang's study account for several geographic threats to validity and potential sources of error in the original study.</p>
+<p>We implemented the <strong><em>osmnx speed module</em></strong> in order to improve computational efficiency and legibility of the code.
+This module replaced several of the original "for loops" in the <strong><em>network_setting</em></strong> function, effectively simplifying reducing redundancies.
+In a similar vein, we commented on each line of the <em>overlap_calc</em> function, explaining what each line accomplished, which could improve the reproducibility of this study, given that it is easier to modify or change code when you know what each line or function does.</p>
+<p>The other significant change that we made improved translation from hospital cathcments into hexagons by way of modifying the <strong><em>overlap_calc</em></strong> function. Instead of exlcuding hospital catchments whose area is less than 50% within a certain hexagon, we used an area-weighted reaggregation to weight a service area by the percentage of overlap, which improves the accuracyof the model and decreases the model's sensitivity to the modifiable areal unit problem.</p>
+<p>Our <strong>Accessibility map</strong> looks at ICU beds and populations at risk. The accessibility of these resources appears different -- and greater -- than in the original map, which excluded hospital catchments whose area was less than 50% within a certain hexagon. In essence, at-risk populations have greater and faster access to ICU beds (or hospital resources) than what the original map suggested.</p>
+<p>In light of the changes we have made to this study, we can be more confident in our results.</p>
 
 </div>
 </div>
